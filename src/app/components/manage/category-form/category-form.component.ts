@@ -4,11 +4,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { CategoryService } from '../../../services/category.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @Component({
   selector: 'app-category-form',
-  imports: [FormsModule,MatInputModule,MatButtonModule],
+  imports: [FormsModule,MatInputModule,MatButtonModule,MatSelectModule,],
   templateUrl: './category-form.component.html',
   styleUrl: './category-form.component.css'
 })
