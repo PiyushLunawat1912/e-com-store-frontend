@@ -11,11 +11,11 @@ import { BrandService } from '../../../services/brand.service';
 import { ProductService } from '../../../services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { get } from 'http';
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-product-form',
-  imports: [CommonModule,ReactiveFormsModule,MatInputModule,MatButtonModule,MatSelectModule,],
+  imports: [CommonModule,ReactiveFormsModule,MatInputModule,MatButtonModule,MatSelectModule,MatCheckboxModule,],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.css'
 })
@@ -29,7 +29,9 @@ export class ProductFormComponent {
     discount:[],
     images:this.formBuilder.array([]),
     categoryId:[null,[Validators.required]],
-    brandId:[null,[Validators.required]]
+    brandId:[null,[Validators.required]],
+    isFeatured:[false],
+    isNewProduct:[false],
   })
  
   categoryService= inject(CategoryService);
