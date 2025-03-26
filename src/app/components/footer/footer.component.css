@@ -1,0 +1,28 @@
+  :root{
+    --hover-color: #1558b0; /* Hover color */
+  }
+    .footer {
+        background-color: #1a73e8;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    .footer-links, .social-links {
+        margin-bottom: 10px;
+    }
+
+    .footer a {
+        color: white;
+        text-decoration: none;
+        margin: 0 15px;
+        transition: color 0.3s ease;
+    }
+
+    .footer a:hover {
+        text-decoration: underline;
+        color: var(--hover-color);
+        transition: 0.3s;
+    }
+
