@@ -1,0 +1,26 @@
+<header class="site-header">
+    <div class="top-bar">
+      <div class="logo">
+        <!-- <img src="logo.png" alt="Website Logo"> -->
+         <span>MY SHOP NAME</span>
+      </div>
+      <div class="search-bar">
+        <input type="text" placeholder="Search...">
+        <button type="submit"><i class="fas fa-search"></i></button>
+      </div>
+      <div class="profile">
+        <a href="#">Profile</a>
+      </div>
+    </div>
+    <nav class="category-menu">
+      <ul>
+        @for (category of categoryList; track $index){
+          <li><a >{{category.name}} </a></li>
+
+        }
+       
+
+      </ul>
+    </nav>
+  </header>
+  
