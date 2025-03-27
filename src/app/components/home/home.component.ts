@@ -2,10 +2,12 @@ import { Component, inject } from '@angular/core';
 import { CustomerService } from '../../services/customer.service';
 import { Product } from '../../types/product';
 import { MatButtonModule } from '@angular/material/button';
+import { ProductCardComponent } from '../product-card/product-card.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [MatButtonModule],
+  imports: [MatButtonModule,ProductCardComponent,RouterLink,],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

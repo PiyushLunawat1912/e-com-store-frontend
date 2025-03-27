@@ -1,12 +1,12 @@
 <header class="site-header">
     <div class="top-bar">
-      <div class="logo">
+      <div class="logo cursor-pointer" routerLink="/">
         <!-- <img src="logo.png" alt="Website Logo"> -->
          <span>MY SHOP NAME</span>
       </div>
       <div class="search-bar">
-        <input type="text" placeholder="Search...">
-        <button type="submit"><i class="fas fa-search"></i></button>
+        <input type="text" placeholder="Search..."  (keyup.enter)="onSearch($event)">
+        <!-- <button type="submit"><i class="fas fa-search"></i></button> -->
       </div>
       <div class="profile">
         <a href="#">Profile</a>
@@ -15,7 +15,7 @@
     <nav class="category-menu">
       <ul>
         @for (category of categoryList; track $index){
-          <li><a >{{category.name}} </a></li>
+          <li (click)="searchCategory(category._id!)"><a >{{category.name}} </a></li>
 
         }
        
