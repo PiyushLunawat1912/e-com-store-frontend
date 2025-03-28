@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient  } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Category } from '../types/category';
 

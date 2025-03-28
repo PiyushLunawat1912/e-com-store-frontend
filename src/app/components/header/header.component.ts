@@ -2,36 +2,41 @@ import { Component, inject } from '@angular/core';
 import { CategoryService } from '../../services/category.service';
 import { Category } from '../../types/category';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { CustomerService } from '../../services/customer.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink,],
+  imports: [RouterLink, FormsModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrl: './header.component.css',
 })
 export class HeaderComponent {
-
-  categoryService = inject (CategoryService);
-  categoryList : Category[]=[];
+  customerService = inject(CustomerService);
+  categoryList: Category[] = [];
   router = inject(Router);
-  
+  authService = inject(AuthService);
+  searchTerm!: string;
 
-  ngOnInit(){
-    this.categoryService.getCategories().subscribe(result => {
+  ngOnInit() {
+    this.customerService.getCategories().subscribe((result) => {
       this.categoryList = result;
     });
   }
 
-
-  onSearch(e:any){
+  onSearch(e: any) {
     if (e.target.value) {
-      this.router.navigateByUrl("/products?search="+e.target.value)
-      
+      this.router.navigateByUrl('/products?search=' + e.target.value);
     }
-
   }
-  searchCategory(id:string){
-    this.router.navigateByUrl("/products?categoryId="+id)
+  searchCategory(id: string) {
+    this.searchTerm = '';
+    this.router.navigateByUrl('/products?categoryId=' + id);
   }
 
+  logout() {
+    this.authService.logout();
+    this.router.navigateByUrl('/login');
+  }
 }
