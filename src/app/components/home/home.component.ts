@@ -7,27 +7,24 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [MatButtonModule,ProductCardComponent,RouterLink,],
+  imports: [MatButtonModule, ProductCardComponent, RouterLink],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
 export class HomeComponent {
-   customerService = inject(CustomerService);
-   newProducts: Product[]=[];
-   featuredProducts: Product[]=[];
+  customerService = inject(CustomerService);
+  newProducts: Product[] = [];
+  featuredProducts: Product[] = [];
 
-   ngOnInit(){
-    this.customerService.getFeaturedProducts().subscribe(result=>{
+  ngOnInit() {
+    this.customerService.getFeaturedProducts().subscribe((result) => {
       this.featuredProducts = result;
       console.log(this.featuredProducts);
-      
     });
 
-    this.customerService.getNewProducts().subscribe(result=>{
+    this.customerService.getNewProducts().subscribe((result) => {
       this.newProducts = result;
       console.log(this.newProducts);
     });
-
-
-   }
+  }
 }

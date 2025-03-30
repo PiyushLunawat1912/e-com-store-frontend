@@ -1,9 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 import { Brand } from '../../../types/brand';
 import { Category } from '../../../types/category';
 import { CategoryService } from '../../../services/category.service';
@@ -11,102 +16,102 @@ import { BrandService } from '../../../services/brand.service';
 import { ProductService } from '../../../services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { get } from 'http';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-product-form',
-  imports: [CommonModule,ReactiveFormsModule,MatInputModule,MatButtonModule,MatSelectModule,MatCheckboxModule,],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatCheckboxModule,
+  ],
   templateUrl: './product-form.component.html',
-  styleUrl: './product-form.component.css'
+  styleUrl: './product-form.component.css',
 })
 export class ProductFormComponent {
   formBuilder = inject(FormBuilder);
   productForm = this.formBuilder.group({
-    name:[null,[Validators.required,Validators.minLength(5)]],
-    shortDescription:[null,[Validators.required,Validators.minLength(10)]],
-    description :[null,[Validators.required,Validators.minLength(50)]],
-    Price:[null,[Validators.required]],
-    discount:[],
-    images:this.formBuilder.array([]),
-    categoryId:[null,[Validators.required]],
-    brandId:[null,[Validators.required]],
-    isFeatured:[false],
-    isNewProduct:[false],
-  })
- 
-  categoryService= inject(CategoryService);
-  brandService= inject(BrandService);
-  productService = inject(ProductService)
-
-  brands:Brand[]=[];
-  categories:Category[]=[];
-  id!:string;
-  route = inject(ActivatedRoute)
-
-
-ngOnInit(){
- 
-  this.categoryService.getCategories().subscribe((result)=>{
-    this.categories = result;
+    name: [null, [Validators.required, Validators.minLength(5)]],
+    shortDescription: [null, [Validators.required, Validators.minLength(10)]],
+    description: [null, [Validators.required, Validators.minLength(50)]],
+    price: [null, [Validators.required]],
+    discount: [],
+    images: this.formBuilder.array([]),
+    categoryId: [null, [Validators.required]],
+    brandId: [null, [Validators.required]],
+    isFeatured: [false],
+    isNewProduct: [false],
   });
 
-  this.brandService.getBrands().subscribe((result)=>{
-    this.brands = result;
-  });
+  categoryService = inject(CategoryService);
+  brandService = inject(BrandService);
+  productService = inject(ProductService);
 
-  this.id = this.route.snapshot.params["id"];
-  console.log(this.id);
-  if (this.id) {
-    this.productService.getProductById(this.id).subscribe(result=>{
-      for (let index = 0; index < result.images.length; index++) {
-        this.addImage();
-        
-      }
-      this.productForm.patchValue(result as any)
-    })
-  } else {
-    this.addImage();
-  }
-  
+  brands: Brand[] = [];
+  categories: Category[] = [];
+  id!: string;
+  route = inject(ActivatedRoute);
 
-  
-
-
-}
-
-get headerText(): string {
-  return this.id ? 'Update Product' : 'Add New Product';
-}
- router = inject(Router)
-
-  addProduct(){
-    let value = this.productForm.value 
-    console.log(value);
-    this.productService.addProduct(value as any).subscribe(result=>{
-      alert("Product Added ");
-      this.router.navigateByUrl("/admin/products");
+  ngOnInit() {
+    this.categoryService.getCategories().subscribe((result) => {
+      this.categories = result;
     });
-};
 
-  updateProduct(){
-    let value = this.productForm.value 
+    this.brandService.getBrands().subscribe((result) => {
+      this.brands = result;
+    });
+
+    this.id = this.route.snapshot.params['id'];
+    console.log(this.id);
+    if (this.id) {
+      this.productService.getProductById(this.id).subscribe((result) => {
+        for (let index = 0; index < result.images.length; index++) {
+          this.addImage();
+        }
+        this.productForm.patchValue(result as any);
+      });
+    } else {
+      this.addImage();
+    }
+  }
+
+  get headerText(): string {
+    return this.id ? 'Update Product' : 'Add New Product';
+  }
+  router = inject(Router);
+
+  addProduct() {
+    let value = this.productForm.value;
     console.log(value);
-    this.productService.updateProduct(this.id,value as any).subscribe(result=>{
-      alert("Product Updated ");
-      this.router.navigateByUrl("/admin/products");
+    this.productService.addProduct(value as any).subscribe((result) => {
+      alert('Product Added ');
+      this.router.navigateByUrl('/admin/products');
     });
   }
 
-  addImage(){
+  updateProduct() {
+    let value = this.productForm.value;
+    console.log(value);
+    this.productService
+      .updateProduct(this.id, value as any)
+      .subscribe((result) => {
+        alert('Product Updated ');
+        this.router.navigateByUrl('/admin/products');
+      });
+  }
+
+  addImage() {
     this.images.push(this.formBuilder.control(null));
   }
 
-  removeImage(){
-    this.images.removeAt(this.images.controls.length-1);
+  removeImage() {
+    this.images.removeAt(this.images.controls.length - 1);
   }
 
-  get images (){
+  get images() {
     return this.productForm.get('images') as FormArray;
   }
-
 }

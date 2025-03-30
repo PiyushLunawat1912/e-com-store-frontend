@@ -44,19 +44,9 @@ export class CustomerService {
     page: number,
     pageSize: number
   ) {
-    const params: any = {};
-
-    if (searchTerm) params.searchTerm = searchTerm;
-    if (categoryId) params.categoryId = categoryId; // ✅ Ensure categoryId is included
-    if (brandId) params.brandId = brandId;
-    if (sortBy) params.sortBy = sortBy;
-    if (sortOrder) params.sortOrder = sortOrder;
-    if (page) params.page = page;
-    if (pageSize) params.pageSize = pageSize;
-
     return this.http.get<Product[]>(
       environment.apiUrl +
-        `/customer/products?searchTerm=${searchTerm}&categoryId=${categoryId}&brandId=${brandId}&sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&pageSize=${pageSize}`
+        `/customer/products?searchTerm=${searchTerm}&categoryId=${categoryId}&brandId=${brandId}&sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&sortOrder=${pageSize}`
     );
   }
 }
