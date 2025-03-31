@@ -49,4 +49,10 @@ export class CustomerService {
         `/customer/products?searchTerm=${searchTerm}&categoryId=${categoryId}&brandId=${brandId}&sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&sortOrder=${pageSize}`
     );
   }
+
+  getProductById(id: string) {
+    return this.http.get<Product>(
+      environment.apiUrl + '/customer/product/' + id
+    );
+  }
 }

@@ -4,6 +4,7 @@ import { Product } from '../../types/product';
 import { MatButtonModule } from '@angular/material/button';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { RouterLink } from '@angular/router';
+import { WishlistService } from '../../services/wishlist.service';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,7 @@ export class HomeComponent {
   customerService = inject(CustomerService);
   newProducts: Product[] = [];
   featuredProducts: Product[] = [];
+  wishlistService = inject(WishlistService);
 
   ngOnInit() {
     this.customerService.getFeaturedProducts().subscribe((result) => {
@@ -26,5 +28,7 @@ export class HomeComponent {
       this.newProducts = result;
       console.log(this.newProducts);
     });
+
+    this.wishlistService.init();
   }
 }

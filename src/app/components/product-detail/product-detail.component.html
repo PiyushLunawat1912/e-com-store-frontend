@@ -1,1 +1,156 @@
-<p>product-detail works!</p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Detail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .thumbnail:hover {
+        opacity: 0.7;
+        transform: scale(1.1);
+        transition: 0.3s;
+      }
+      .scroll-container {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+      }
+      .scroll-item {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+      }
+    </style>
+  </head>
+  @if(product){
+  <body class="bg-gray-100">
+    <div class="max-w-6xl mx-auto p-6">
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-lg shadow-lg"
+      >
+        <!-- Product Gallery -->
+        <div class="h-full flex flex-col items-center sticky top-6">
+          <img
+            id="mainImage"
+            [src]="mainImage"
+            alt="Product Image"
+            class="w-full rounded-lg shadow-lg"
+          />
+          <button
+            class="mt-6 bg-blue-600 text-white px-8 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition-all"
+          >
+            Add to Cart
+          </button>
+          <div class="grid grid-cols-4 gap-2 mt-4">
+            @for(url of product.images; track $index){
+            <img
+              [src]="url"
+              alt="Thumbnail"
+              class="w-full rounded-lg cursor-pointer thumbnail"
+              (click)="changeImage(url)"
+            />
+            }
+          </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="flex flex-col justify-between">
+          <div>
+            <h2 class="text-4xl font-extrabold text-gray-800">
+              {{ product.name }}
+            </h2>
+            <p class="text-2xl text-gray-600 mt-2 font-semibold">
+              <s>₹{{ product.price }}</s>
+            </p>
+            <p class="text-xl text-red-400 mt-2 font-semibold">
+              ₹{{ product.discount }}% OFF
+            </p>
+            <p class="text-2xl text-green-600 mt-2 font-semibold">
+              ₹{{ sellingPrice }}
+            </p>
+            <p class="mt-4 text-gray-700 leading-relaxed">
+              {{ product.shortDescription }}
+            </p>
+          </div>
+
+          <!-- Product Description & Reviews -->
+          <div class="mt-8">
+            <h3 class="text-3xl font-bold mb-4 text-gray-800">
+              Product Details
+            </h3>
+            <pre class="text-gray-700 leading-relaxed">{{
+              product.description
+            }}</pre>
+          </div>
+
+          @if(similarProducts.length){
+          <div class="mt-8">
+            <h4 class="text-2xl font-bold mb-4 text-gray-800">
+              Similar Products
+            </h4>
+            <div class="scroll-container space-x-4 p-2">
+              @for (product of similarProducts; track $index){
+              <div
+                class="scroll-item w-60 bg-white rounded-lg shadow-lg p-4 hover:shadow-2xl transition"
+              >
+                <app-product-card [product]="product"></app-product-card>
+              </div>
+              }
+            </div>
+          </div>
+          }
+
+          <div class="mt-8">
+            <h3 class="text-3xl font-bold mb-4 text-gray-800">
+              Customer Reviews
+            </h3>
+            <div class="space-y-4">
+              <div class="border-b pb-4">
+                <p class="font-semibold text-lg">John Doe</p>
+                <p class="text-gray-600">Great product! Highly recommend.</p>
+              </div>
+              <div class="border-b pb-4">
+                <p class="font-semibold text-lg">Jane Smith</p>
+                <p class="text-gray-600">Good value for the price.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Review Form -->
+          <div class="mt-8">
+            <h3 class="text-3xl font-bold mb-4 text-gray-800">
+              Leave a Review
+            </h3>
+            <form>
+              <div class="mb-4">
+                <label class="block text-gray-700">Name</label>
+                <input
+                  type="text"
+                  class="w-full p-3 border rounded-lg shadow-sm"
+                  placeholder="Your Name"
+                />
+              </div>
+              <div class="mb-4">
+                <label class="block text-gray-700">Review</label>
+                <textarea
+                  class="w-full p-3 border rounded-lg shadow-sm"
+                  rows="4"
+                  placeholder="Your Review"
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-8 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition-all"
+              >
+                Submit Review
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  }@else {
+  <h2>Loading...</h2>
+  }
+</html>

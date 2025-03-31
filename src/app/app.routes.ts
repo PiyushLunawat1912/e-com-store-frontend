@@ -13,6 +13,7 @@ import { authGaurd } from './core/auth-guard';
 import { DashboardComponent } from './components/manage/dashboard/dashboard.component';
 import { adminGaurd } from './core/admin-guard';
 import { CustomerProfileComponent } from './components/customer-profile/customer-profile.component';
+import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 
 export const routes: Routes = [
   {
@@ -90,7 +91,7 @@ export const routes: Routes = [
 
   {
     path: 'product/:id',
-    component: ProductListComponent,
+    component: ProductDetailComponent,
     canActivate: [authGaurd],
   },
 
