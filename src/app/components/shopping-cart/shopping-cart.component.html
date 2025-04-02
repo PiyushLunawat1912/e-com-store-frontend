@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <div class="max-w-6xl mx-auto p-6">
+      <h1 class="text-3xl font-bold mb-6">Shopping Cart</h1>
+
+      <div class="bg-white p-6 rounded-lg shadow-lg">
+        <!-- Cart Items -->
+        @for(item of cartItems; track $index){
+
+        <div class="space-y-6">
+          <div class="flex items-center justify-between border-b pb-4">
+            <div class="flex items-center space-x-4">
+              <img
+                [src]="item.product.images[0]"
+                alt="Product"
+                class="w-20 h-20 rounded-lg shadow"
+              />
+              <div>
+                <h2 class="text-lg font-semibold">{{ item.product.name }}</h2>
+                <div class="flex items-center justify-between">
+                  <p class="text-lg text-gray-500 font-semibold">
+                    <s>₹{{ item.product.price }}</s>
+                  </p>
+                  <p class="text-lg text-red-500 font-semibold">
+                    {{ item.product.discount }}% OFF
+                  </p>
+                  <p class="text-2xl text-green-600 font-bold">
+                    ₹{{ sellingPrice(item.product) }}
+                  </p>
+                </div>
+                <div>
+                  Total Amount: ₹{{
+                    sellingPrice(item.product) * item.quantity
+                  }}
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center space-x-4">
+              <button
+                class="px-3 py-1 bg-gray-300 text-gray-700 rounded-lg"
+                (click)="addToCart(item.product._id!, -1)"
+              >
+                -
+              </button>
+              <span class="font-semibold"> {{ item.quantity }}</span>
+              <button
+                class="px-3 py-1 bg-gray-300 text-gray-700 rounded-lg"
+                (click)="addToCart(item.product._id!, 1)"
+              >
+                +
+              </button>
+              <button
+                class="text-red-500 hover:text-red-700"
+                (click)="removeFromCart(item.product)"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+        }
+
+        <!-- Empty Cart Message -->
+        <ng-template #emptycart>
+          <p class="text-gray-500 text-center">No items in wishlist</p>
+        </ng-template>
+
+        <!-- Cart Summary -->
+        <div class="mt-6 p-6 bg-gray-50 rounded-lg">
+          <h2 class="text-xl font-bold">Order Summary</h2>
+          <div>Total:₹{{ totalAmount }}</div>
+
+          <button
+            class="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg shadow-lg hover:bg-blue-700 transition-all"
+          >
+            Proceed to Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

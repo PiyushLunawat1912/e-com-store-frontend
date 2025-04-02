@@ -31,21 +31,24 @@
         mat-fab
         color="primary"
         class="shadow-lg hover:scale-110 transition-transform hover:shadow-xl"
+        (click)="addToCart(product); $event.stopPropagation()"
       >
+        @if(isProductInCart(product._id!)){
+        <mat-icon>remove_shopping_cart</mat-icon>
+        }@else {
         <mat-icon>add_shopping_cart</mat-icon>
+        }
       </button>
 
       <button
         mat-fab
         color="warn"
-        (click)="addToWishlist(product)"
+        (click)="toggleWishlist(product); $event.stopPropagation()"
         class="shadow-lg hover:scale-110 transition-transform hover:shadow-xl"
       >
-        @if (isInWishlist(product)) {
-        <mat-icon>favorite</mat-icon>
-        } @else {
-        <mat-icon>favorite_border</mat-icon>
-        }
+        <mat-icon>{{
+          isInWishlist(product) ? "favorite" : "favorite_border"
+        }}</mat-icon>
       </button>
     </div>
   </div>

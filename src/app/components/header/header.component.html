@@ -1,39 +1,72 @@
-<header class="site-header">
-  <div class="top-bar">
-    <div class="logo cursor-pointer" routerLink="/">
-      <!-- <img src="logo.png" alt="Website Logo"> -->
-      <span class="text-xl font-bold">MY SHOP NAME</span>
+<header class="bg-white shadow-md p-4 sticky top-0 z-50">
+  <div class="container mx-auto flex justify-between items-center">
+    <!-- Logo -->
+    <div
+      class="flex items-center cursor-pointer text-2xl font-bold text-gray-800"
+      routerLink="/"
+    >
+      <!-- <img src="logo.png" alt="Website Logo" class="h-10 mr-2"> -->
+      <span>MY SHOP NAME</span>
     </div>
-    <div class="search-bar">
+
+    <!-- Search Bar -->
+    <div class="relative w-1/3">
       <input
         type="text"
-        placeholder="Search..."
+        placeholder="Search products..."
         [(ngModel)]="searchTerm"
         (keyup.enter)="onSearch($event)"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-      <!-- <button type="submit"><i class="fas fa-search"></i></button> -->
+      <button
+        class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-blue-500"
+      >
+        <mat-icon>search</mat-icon>
+      </button>
     </div>
-    <div class="profile">
+
+    <!-- User Profile & Actions -->
+    <div class="flex items-center space-x-4">
       @if(authService.isAdmin){
-      <a routerLink="/admin">{{ authService.userName }}</a>
+      <a routerLink="/admin" class="text-gray-700 hover:text-blue-500">{{
+        authService.userName
+      }}</a>
       }@else{
-      <a routerLink="/profile">{{ authService.userName }}</a>
+      <a routerLink="/profile" class="text-gray-700 hover:text-blue-500">{{
+        authService.userName
+      }}</a>
       } @if(authService.isLoggedIn){
-      <a (click)="logout()" class="cursor-pointer ml-2">Logout</a>
-      } @else{
-      <a routerLink="/register" class="cursor-pointer ml-2">Register</a>
-      <a routerLink="/login" class="cursor-pointer ml-2">Login</a>
+      <a routerLink="/cart" class="text-gray-700 hover:text-red-500">
+        <mat-icon>add_shopping_cart</mat-icon>
+      </a>
+      <a routerLink="/wishlists" class="text-gray-700 hover:text-red-500">
+        <mat-icon>favorite</mat-icon>
+      </a>
+      <a
+        (click)="logout()"
+        class="text-gray-700 hover:text-red-500 cursor-pointer"
+        >Logout</a
+      >
+      }@else{
+      <a routerLink="/register" class="text-gray-700 hover:text-blue-500"
+        >Register</a
+      >
+      <a routerLink="/login" class="text-gray-700 hover:text-blue-500">Login</a>
       }
     </div>
   </div>
-  @if(authService.isLoggedIn){
-  <nav class="category-menu">
-    <ul>
-      @for (category of categoryList; track $index){
-      <li (click)="searchCategory(category._id!)" class="cursor-pointer">
-        <a>{{ category.name }} </a>
-      </li>
 
+  <!-- Category Navigation (Only Visible When Logged In) -->
+  @if(authService.isLoggedIn){
+  <nav class="bg-blue-500 text-white mt-3 py-2">
+    <ul class="container mx-auto flex justify-center space-x-6">
+      @for (category of categoryList; track $index){
+      <li
+        (click)="searchCategory(category._id!)"
+        class="cursor-pointer hover:underline"
+      >
+        <a>{{ category.name }}</a>
+      </li>
       }
     </ul>
   </nav>

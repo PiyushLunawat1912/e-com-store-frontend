@@ -5,10 +5,11 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CustomerService } from '../../services/customer.service';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, MatIconModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
