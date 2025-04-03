@@ -1,0 +1,33 @@
+/* Ensures the action buttons are properly aligned */
+.action-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px; /* Adds space between Edit and Delete buttons */
+}
+
+/* Buttons Styling */
+button {
+  min-width: 90px; /* Ensures uniform button sizes */
+  padding: 8px 12px;
+  font-size: 14px;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Hover effect */
+button:hover {
+  transform: scale(1.05);
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* No data row styling */
+.mat-row {
+  text-align: center;
+}

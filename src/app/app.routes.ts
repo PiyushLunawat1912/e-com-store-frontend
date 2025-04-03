@@ -16,6 +16,7 @@ import { CustomerProfileComponent } from './components/customer-profile/customer
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { WishlistComponent } from './components/wishlist/wishlist.component';
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
+import { CustomerOrdersComponent } from './components/customer-orders/customer-orders.component';
 
 export const routes: Routes = [
   {
@@ -112,6 +113,11 @@ export const routes: Routes = [
   {
     path: 'cart',
     component: ShoppingCartComponent,
+    canActivate: [authGaurd],
+  },
+  {
+    path: 'orders',
+    component: CustomerOrdersComponent,
     canActivate: [authGaurd],
   },
 

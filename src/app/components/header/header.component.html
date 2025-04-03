@@ -35,12 +35,15 @@
       <a routerLink="/profile" class="text-gray-700 hover:text-blue-500">{{
         authService.userName
       }}</a>
-      } @if(authService.isLoggedIn){
+      } @if(authService.isLoggedIn && !authService.isAdmin){
       <a routerLink="/cart" class="text-gray-700 hover:text-red-500">
         <mat-icon>add_shopping_cart</mat-icon>
       </a>
       <a routerLink="/wishlists" class="text-gray-700 hover:text-red-500">
         <mat-icon>favorite</mat-icon>
+      </a>
+      <a routerLink="/orders" class="text-gray-700 hover:text-red-500">
+        <mat-icon>Order</mat-icon>
       </a>
       <a
         (click)="logout()"

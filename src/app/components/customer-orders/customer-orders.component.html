@@ -1,0 +1,70 @@
+<div class="space-y-10 max-w-4xl mx-auto">
+  @for(order of orders; track $index){
+  <div
+    class="p-6 bg-white shadow-lg rounded-lg border border-gray-200 order-card"
+  >
+    <!-- Order Details -->
+    <div class="border-b pb-4 flex justify-between items-center">
+      <div>
+        <h6 class="text-lg font-bold text-gray-800">
+          Order ID: {{ order._id }}
+        </h6>
+        <p class="text-sm text-gray-500">
+          Date: {{ order.date | date : "mediumDate" }}
+        </p>
+      </div>
+      <span
+        class="status-badge"
+        [ngClass]="{
+          'status-processing': order.status === 'Processing',
+          'status-shipped': order.status === 'Shipped',
+          'status-delivered': order.status === 'Delivered'
+        }"
+      >
+        {{ order.status || "Processing" }}
+      </span>
+    </div>
+
+    @for (item of order.items; track $index) {
+    <div
+      class="flex items-center justify-between border-b pb-4 pt-4 order-item rounded-lg transition-all"
+    >
+      <div class="flex items-center space-x-4">
+        <!-- Product Image -->
+        <img
+          [src]="item.product.images[0]"
+          alt="Product"
+          class="product-image"
+        />
+
+        <div>
+          <!-- Product Name -->
+          <h2 class="text-lg font-semibold text-gray-900">
+            {{ item.product.name }}
+          </h2>
+
+          <!-- Product Pricing -->
+          <div class="flex items-center space-x-3 text-gray-600">
+            <p class="text-sm">
+              <s>₹{{ item.product.price }}</s>
+            </p>
+            <p class="text-sm text-red-500 font-semibold">
+              {{ item.product.discount }}% OFF
+            </p>
+            <p class="text-lg font-bold text-green-600">
+              ₹{{ sellingPrice(item.product) }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <span class="quantity-badge">
+          {{ item.quantity }}
+        </span>
+      </div>
+    </div>
+    }
+  </div>
+  }
+</div>

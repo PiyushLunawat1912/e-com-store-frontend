@@ -31,9 +31,6 @@ export class HomeComponent {
       this.newProducts = result;
       console.log(this.newProducts);
     });
-
-    this.loadWishlist();
-    this.cartService.init();
   }
 
   loadWishlist() {
