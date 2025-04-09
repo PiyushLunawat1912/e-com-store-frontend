@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CustomerService } from '../../services/customer.service';
 import { Product } from '../../types/product';
 import { ProductCardComponent } from '../product-card/product-card.component';
@@ -9,6 +9,8 @@ import { Category } from '../../types/category';
 import { Brand } from '../../types/brand';
 import { MatButtonModule } from '@angular/material/button';
 import { ProductService } from '../../services/product.service';
+import { Order } from '../../types/order';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product-list',
@@ -17,11 +19,13 @@ import { ProductService } from '../../services/product.service';
     MatSelectModule,
     FormsModule,
     MatButtonModule,
+    CommonModule,
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
 })
 export class ProductListComponent {
+  private cdr = inject(ChangeDetectorRef);
   customerService = inject(CustomerService);
   productService = inject(ProductService);
   searchTerm: string = '';
@@ -35,6 +39,11 @@ export class ProductListComponent {
   route = inject(ActivatedRoute);
   category: Category[] = [];
   brands: Brand[] = [];
+  // Pagination
+  currentPage = 1;
+  itemsPerPage = 5;
+
+  orders: Order[] = []; // ✅ initialized
   ngOnInit() {
     this.customerService.getCategories().subscribe((result) => {
       this.category = result;
@@ -48,6 +57,14 @@ export class ProductListComponent {
 
       this.getProducts();
     });
+  }
+  get totalPages(): number {
+    return Math.ceil(this.orders.length / this.itemsPerPage);
+  }
+
+  get paginatedOrders(): Order[] {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    return this.orders.slice(start, start + this.itemsPerPage);
   }
 
   getProducts() {
@@ -97,9 +114,9 @@ export class ProductListComponent {
       });
   }
   isNext = true;
-  pageChange(page: number) {
-    this.page = page;
-    this.isNext = true;
-    this.getProducts();
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
   }
 }

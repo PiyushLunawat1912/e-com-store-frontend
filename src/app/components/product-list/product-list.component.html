@@ -63,22 +63,27 @@
     </div>
 
     <!-- Pagination Controls -->
-    <div class="flex justify-center gap-4 mt-8">
+    <div class="mt-8 flex justify-center space-x-2">
       <button
-        mat-raised-button
-        color="primary"
-        class="px-6 py-2 rounded-lg shadow-md"
-        [disabled]="page == 1"
-        (click)="pageChange(page - 1)"
+        class="px-4 py-1 rounded bg-gray-300 hover:bg-gray-400 text-sm"
+        [disabled]="currentPage === 1"
+        (click)="goToPage(currentPage - 1)"
       >
         Previous
       </button>
       <button
-        mat-raised-button
-        color="primary"
-        class="px-6 py-2 rounded-lg shadow-md"
-        (click)="pageChange(page + 1)"
-        [disabled]="isNext"
+        *ngFor="let page of [].constructor(totalPages); let i = index"
+        class="px-3 py-1 rounded border"
+        [class.bg-blue-500]="currentPage === i + 1"
+        [class.text-white]="currentPage === i + 1"
+        (click)="goToPage(i + 1)"
+      >
+        {{ i + 1 }}
+      </button>
+      <button
+        class="px-4 py-1 rounded bg-gray-300 hover:bg-gray-400 text-sm"
+        [disabled]="currentPage === totalPages"
+        (click)="goToPage(currentPage + 1)"
       >
         Next
       </button>

@@ -5,7 +5,6 @@
       class="flex items-center cursor-pointer text-2xl font-bold text-gray-800"
       routerLink="/"
     >
-      <!-- <img src="logo.png" alt="Website Logo" class="h-10 mr-2"> -->
       <span>MY SHOP NAME</span>
     </div>
 
@@ -27,15 +26,14 @@
 
     <!-- User Profile & Actions -->
     <div class="flex items-center space-x-4">
-      @if(authService.isAdmin){
-      <a routerLink="/admin" class="text-gray-700 hover:text-blue-500">{{
-        authService.userName
-      }}</a>
-      }@else{
-      <a routerLink="/profile" class="text-gray-700 hover:text-blue-500">{{
-        authService.userName
-      }}</a>
-      } @if(authService.isLoggedIn && !authService.isAdmin){
+      @if(authService.isLoggedIn){ @if(authService.isAdmin){
+      <a routerLink="/admin" class="text-gray-700 hover:text-blue-500">
+        {{ authService.userName }}
+      </a>
+      } @else {
+      <a routerLink="/profile" class="text-gray-700 hover:text-blue-500">
+        {{ authService.userName }}
+      </a>
       <a routerLink="/cart" class="text-gray-700 hover:text-red-500">
         <mat-icon>add_shopping_cart</mat-icon>
       </a>
@@ -45,12 +43,14 @@
       <a routerLink="/orders" class="text-gray-700 hover:text-red-500">
         <mat-icon>Order</mat-icon>
       </a>
+      }
       <a
         (click)="logout()"
         class="text-gray-700 hover:text-red-500 cursor-pointer"
-        >Logout</a
       >
-      }@else{
+        Logout
+      </a>
+      } @else {
       <a routerLink="/register" class="text-gray-700 hover:text-blue-500"
         >Register</a
       >
@@ -58,20 +58,19 @@
       }
     </div>
   </div>
-
-  <!-- Category Navigation (Only Visible When Logged In) -->
-  @if(authService.isLoggedIn){
-  <nav class="bg-blue-500 text-white mt-3 py-2">
-    <ul class="container mx-auto flex justify-center space-x-6">
-      @for (category of categoryList; track $index){
-      <li
-        (click)="searchCategory(category._id!)"
-        class="cursor-pointer hover:underline"
-      >
-        <a>{{ category.name }}</a>
-      </li>
-      }
-    </ul>
-  </nav>
-  }
+  <!-- ✅ Close the .container div -->
 </header>
+
+<!-- Category Navigation (Only Visible When Logged In) -->
+<nav class="bg-blue-500 text-white mt-3 py-2">
+  <ul class="container mx-auto flex justify-center space-x-6">
+    @if(authService.isLoggedIn){ @for (category of categoryList; track $index){
+    <li
+      (click)="searchCategory(category._id!)"
+      class="cursor-pointer hover:underline"
+    >
+      <a>{{ category.name }}</a>
+    </li>
+    } }
+  </ul>
+</nav>

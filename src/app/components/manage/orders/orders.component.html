@@ -1,0 +1,129 @@
+<div class="space-y-10 max-w-4xl mx-auto">
+  @for (order of paginatedOrders; track $index) {
+  <div
+    class="p-6 bg-gradient-to-br from-white to-gray-50 shadow-xl rounded-2xl border border-gray-200 transition-transform hover:scale-[1.01] duration-200"
+  >
+    <!-- Order Header -->
+    <div
+      class="border-b pb-4 flex flex-col md:flex-row justify-between md:items-center gap-4"
+    >
+      <div class="flex-1 space-y-2">
+        <h6 class="text-xl font-bold text-gray-800">
+          🗾 Order ID: <span class="text-blue-600">{{ order._id }}</span>
+        </h6>
+        <p class="text-sm text-gray-500">
+          🗕 {{ order.date | date : "mediumDate" }}
+        </p>
+
+        <!-- Customer Address Block -->
+        <div
+          class="mt-3 bg-gray-100 p-4 rounded-lg shadow-inner text-sm text-gray-600"
+        >
+          <h6 class="font-semibold text-gray-800 mb-1">📍 Customer Address</h6>
+          <p>{{ order.address.street }}, {{ order.address.city }}</p>
+          <p>{{ order.address.state }} - {{ order.address.zip }}</p>
+          <p>{{ order.address.country }}</p>
+        </div>
+
+        <!-- Toggle Order Status -->
+        <div class="mt-4">
+          <mat-button-toggle-group
+            name="status"
+            aria-label="Order Status"
+            [value]="order.status"
+            (change)="statusChanged($event, order)"
+            class="shadow rounded-lg overflow-hidden"
+          >
+            <mat-button-toggle value="Dispatched"
+              >🚚 Dispatched</mat-button-toggle
+            >
+            <mat-button-toggle value="Shipped">📦 Shipped</mat-button-toggle>
+            <mat-button-toggle value="Delivered"
+              >✅ Delivered</mat-button-toggle
+            >
+          </mat-button-toggle-group>
+        </div>
+      </div>
+
+      <!-- Status Badge -->
+      <span
+        class="self-start md:self-center mt-4 md:mt-0 px-4 py-2 text-sm font-bold text-white rounded-full shadow-sm transition"
+        [ngClass]="{
+          'bg-yellow-500': order.status === 'Dispatched',
+          'bg-blue-500': order.status === 'Shipped',
+          'bg-green-600': order.status === 'Delivered'
+        }"
+      >
+        {{ order.status || "Processing" }}
+      </span>
+    </div>
+
+    <!-- Order Items -->
+    @for (item of order.items; track $index) {
+    <div
+      class="flex items-center justify-between border-b py-4 rounded-lg transition-all hover:bg-gray-50"
+    >
+      <div class="flex items-center space-x-4">
+        <!-- Product Image -->
+        <img
+          [src]="item.product.images[0]"
+          alt="Product"
+          class="h-20 w-20 rounded-lg object-cover shadow-sm border transition-transform hover:scale-105 duration-200"
+        />
+
+        <!-- Product Details -->
+        <div>
+          <h2 class="text-lg font-semibold text-gray-900">
+            {{ item.product.name }}
+          </h2>
+          <div class="flex items-center space-x-3 text-gray-600 mt-1">
+            <p class="text-sm line-through">₹{{ item.product.price }}</p>
+            <p class="text-sm text-red-500 font-medium">
+              {{ item.product.discount }}% OFF
+            </p>
+            <p class="text-lg font-bold text-green-600">
+              ₹{{ sellingPrice(item.product) }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quantity -->
+      <div>
+        <span
+          class="bg-gray-100 text-sm px-4 py-1 rounded-full font-semibold text-gray-700 border"
+        >
+          Qty: {{ item.quantity }}
+        </span>
+      </div>
+    </div>
+    }
+  </div>
+  }
+
+  <div class="mt-8 flex justify-center space-x-2">
+    <button
+      class="px-4 py-1 rounded bg-gray-300 hover:bg-gray-400 text-sm"
+      [disabled]="currentPage === 1"
+      (click)="goToPage(currentPage - 1)"
+    >
+      Previous
+    </button>
+    <button
+      *ngFor="let page of [].constructor(totalPages); let i = index"
+      class="px-3 py-1 rounded border"
+      [class.bg-blue-500]="currentPage === i + 1"
+      [class.text-white]="currentPage === i + 1"
+      (click)="goToPage(i + 1)"
+    >
+      {{ i + 1 }}
+    </button>
+    <button
+      class="px-4 py-1 rounded bg-gray-300 hover:bg-gray-400 text-sm"
+      [disabled]="currentPage === totalPages"
+      (click)="goToPage(currentPage + 1)"
+    >
+      Next
+    </button>
+  </div>
+</div>

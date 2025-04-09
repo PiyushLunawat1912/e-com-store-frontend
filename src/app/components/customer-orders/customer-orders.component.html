@@ -1,40 +1,61 @@
 <div class="space-y-10 max-w-4xl mx-auto">
   @for(order of orders; track $index){
   <div
-    class="p-6 bg-white shadow-lg rounded-lg border border-gray-200 order-card"
+    class="p-6 bg-gradient-to-br from-white to-gray-50 shadow-xl rounded-2xl border border-gray-200 order-card transition-transform hover:scale-[1.01] duration-200"
   >
-    <!-- Order Details -->
-    <div class="border-b pb-4 flex justify-between items-center">
+    <!-- Order Header -->
+    <div
+      class="border-b pb-4 flex justify-between items-center bg-gray-100 p-4 rounded-lg mb-4"
+    >
       <div>
-        <h6 class="text-lg font-bold text-gray-800">
-          Order ID: {{ order._id }}
+        <h6 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+          🧾 Order ID:
+          <span class="text-blue-600">{{ order._id }}</span>
         </h6>
         <p class="text-sm text-gray-500">
-          Date: {{ order.date | date : "mediumDate" }}
+          📅 {{ order.date | date : "mediumDate" }}
         </p>
       </div>
+
+      <!-- Order Status Badge with Icons -->
       <span
-        class="status-badge"
+        class="flex items-center gap-2 px-3 py-1 text-sm font-semibold text-white rounded-full shadow-sm"
         [ngClass]="{
-          'status-processing': order.status === 'Processing',
-          'status-shipped': order.status === 'Shipped',
-          'status-delivered': order.status === 'Delivered'
+          'bg-gradient-to-r from-yellow-400 to-yellow-600':
+            order.status === 'Processing',
+          'bg-gradient-to-r from-blue-400 to-blue-600':
+            order.status === 'Shipped',
+          'bg-gradient-to-r from-green-400 to-green-600':
+            order.status === 'Delivered'
         }"
       >
+        <mat-icon
+          fontIcon="hourglass_empty"
+          *ngIf="order.status === 'Processing'"
+        ></mat-icon>
+        <mat-icon
+          fontIcon="local_shipping"
+          *ngIf="order.status === 'Shipped'"
+        ></mat-icon>
+        <mat-icon
+          fontIcon="check_circle"
+          *ngIf="order.status === 'Delivered'"
+        ></mat-icon>
         {{ order.status || "Processing" }}
       </span>
     </div>
 
+    <!-- Order Items -->
     @for (item of order.items; track $index) {
     <div
-      class="flex items-center justify-between border-b pb-4 pt-4 order-item rounded-lg transition-all"
+      class="flex items-center justify-between border-b pb-4 pt-4 rounded-lg transition-all hover:bg-gray-50"
     >
       <div class="flex items-center space-x-4">
         <!-- Product Image -->
         <img
           [src]="item.product.images[0]"
           alt="Product"
-          class="product-image"
+          class="h-20 w-20 rounded-lg object-cover shadow-sm border transition-transform duration-200 hover:scale-105"
         />
 
         <div>
@@ -44,11 +65,9 @@
           </h2>
 
           <!-- Product Pricing -->
-          <div class="flex items-center space-x-3 text-gray-600">
-            <p class="text-sm">
-              <s>₹{{ item.product.price }}</s>
-            </p>
-            <p class="text-sm text-red-500 font-semibold">
+          <div class="flex items-center space-x-3 text-gray-600 mt-1">
+            <p class="text-sm line-through">₹{{ item.product.price }}</p>
+            <p class="text-sm text-red-500 font-medium">
               {{ item.product.discount }}% OFF
             </p>
             <p class="text-lg font-bold text-green-600">
@@ -58,13 +77,42 @@
         </div>
       </div>
 
+      <!-- Quantity -->
       <div>
-        <span class="quantity-badge">
-          {{ item.quantity }}
+        <span
+          class="bg-gray-100 text-sm px-3 py-1 rounded-full font-semibold text-gray-700 border"
+        >
+          🛒 Qty: {{ item.quantity }}
         </span>
       </div>
     </div>
     }
   </div>
   }
+</div>
+
+<div class="mt-8 flex justify-center space-x-2">
+  <button
+    class="px-4 py-1 rounded bg-gray-300 hover:bg-gray-400 text-sm"
+    [disabled]="currentPage === 1"
+    (click)="goToPage(currentPage - 1)"
+  >
+    Previous
+  </button>
+  <button
+    *ngFor="let page of [].constructor(totalPages); let i = index"
+    class="px-3 py-1 rounded border"
+    [class.bg-blue-500]="currentPage === i + 1"
+    [class.text-white]="currentPage === i + 1"
+    (click)="goToPage(i + 1)"
+  >
+    {{ i + 1 }}
+  </button>
+  <button
+    class="px-4 py-1 rounded bg-gray-300 hover:bg-gray-400 text-sm"
+    [disabled]="currentPage === totalPages"
+    (click)="goToPage(currentPage + 1)"
+  >
+    Next
+  </button>
 </div>
